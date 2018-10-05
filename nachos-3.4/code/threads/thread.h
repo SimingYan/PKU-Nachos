@@ -79,9 +79,9 @@ class Thread {
     // THEY MUST be in this position for SWITCH to work.
     int* stackTop;			 // the current stack pointer
     void *machineState[MachineStateSize];  // all registers except for stackTop
-    Thread(char* debugName);        // initialize a Thread 
-  public:
 
+  public:
+    Thread(char* debugName);        // initialize a Thread 
     ~Thread(); 				// deallocate a Thread
 					// NOTE -- thread being deleted
 					// must not be running when delete 
@@ -107,8 +107,6 @@ class Thread {
     int get_uid(){
         return this->uid;
     }
-
-    Thread* getInstance(char* threadName);
 
   private:
     // some of the private data for this class is listed above

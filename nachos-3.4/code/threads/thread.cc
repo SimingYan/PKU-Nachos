@@ -38,7 +38,19 @@ Thread::Thread(char* threadName)
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
-    ThreadNum++;
+    tid=uid=-1;
+
+    for(int i = 0; i < 128; ++i){
+        if(tid_flag[i] == 0){
+            this->tid = i;
+            tid = i
+            tid_flag[i] = 1;
+            tid_pointer[i] = this;
+            break;
+        }
+    }
+    uid = 0; //not used
+    ASSERT(tid<0);
 
 #ifdef USER_PROGRAM
     space = NULL;
@@ -85,15 +97,6 @@ Thread::~Thread()
 //	"func" is the procedure to run concurrently.
 //	"arg" is a single argument to be passed to the procedure.
 //----------------------------------------------------------------------
-
-Thread* Thread::getInstance(char* threadName){
-   if(ThreadNum < 128){
-       return new Thread(threadName);
-   }else{
-       printf("You cannot create more threads!\n");
-       return NULL;
-   }
-}
 
 void 
 Thread::Fork(VoidFunctionPtr func, void *arg)

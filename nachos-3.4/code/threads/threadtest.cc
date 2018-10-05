@@ -59,7 +59,7 @@ ThreadTest2()
     DEBUG('t', "Entering ThreadTest1");
     
     for(int i = 0; i < testnum; ++i){
-        Thread *t = getInstance("new thread");
+        Thread *t = new Thread("forked thread");
     } 
 
 }
