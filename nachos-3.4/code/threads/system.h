@@ -32,6 +32,7 @@ extern Timer *timer;				// the hardware alarm clock
 extern Thread* tid_pointer[128];
 extern int tid_flag[128];
 extern void TS();
+extern int ThreadNum;
 
 #ifdef USER_PROGRAM
 #include "machine.h"

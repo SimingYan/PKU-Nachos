@@ -21,6 +21,7 @@ Timer *timer;				// the hardware timer device,
 
 Thread* tid_pointer[128];
 int tid_flag[128];
+int ThreadNum;
 
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
