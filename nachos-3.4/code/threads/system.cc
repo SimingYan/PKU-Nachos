@@ -19,6 +19,9 @@ Statistics *stats;			// performance metrics
 Timer *timer;				// the hardware timer device,
 					// for invoking context switches
 
+Thread* tid_point[128];
+int tid_flag[128];
+
 #ifdef FILESYS_NEEDED
 FileSystem  *fileSystem;
 #endif
@@ -80,6 +83,7 @@ Initialize(int argc, char **argv)
     int argCount;
     char* debugArgs = "";
     bool randomYield = FALSE;
+    memset(tid_point, 0, 128 * sizeof(Thread*));
 
 #ifdef USER_PROGRAM
     bool debugUserProg = FALSE;	// single step user program
