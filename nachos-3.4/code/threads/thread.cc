@@ -42,7 +42,7 @@ Thread::Thread(char* threadName)
     for(int i = 0; i < 128; ++i){
         if(tid_flag[i] == 0){
             this->tid = i;
-            tid = i
+            tid = i;
             tid_flag[i] = 1;
             tid_pointer[i] = this;
             break;
