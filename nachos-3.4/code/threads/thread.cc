@@ -38,6 +38,7 @@ Thread::Thread(char* threadName)
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
+    '''
     tid=uid=-1;
     for(int i = 0; i < 128; ++i){
         if(tid_flag[i] == 0){
@@ -52,7 +53,7 @@ Thread::Thread(char* threadName)
     if (tid < 0){
         throw std::overflow_error("Run out of tid");
     }
-
+    '''
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
@@ -98,6 +99,15 @@ Thread::~Thread()
 //	"func" is the procedure to run concurrently.
 //	"arg" is a single argument to be passed to the procedure.
 //----------------------------------------------------------------------
+
+Thread* Thread::getInstance(char* threadName){
+   if(ThreadNum < 128){
+       return new Thread(threadName);
+   }else{
+       printf("You cannot create more threads!\n");
+       return NULL;
+   }
+}
 
 void 
 Thread::Fork(VoidFunctionPtr func, void *arg)

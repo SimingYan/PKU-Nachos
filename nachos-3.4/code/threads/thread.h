@@ -108,6 +108,8 @@ class Thread {
         return this->uid;
     }
 
+    Thread* getInstance(char* threadName);
+
   private:
     // some of the private data for this class is listed above
     int tid;
