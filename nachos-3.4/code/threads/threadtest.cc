@@ -58,7 +58,7 @@ ThreadTest2()
 {
     DEBUG('t', "Entering ThreadTest1");
     
-    for(int i = 0; i < testnum; ++i){
+    for(int i = 0; i < 130; ++i){
         Thread *t = new Thread("forked thread");
     } 
 
