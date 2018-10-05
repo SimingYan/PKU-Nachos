@@ -50,7 +50,7 @@ Thread::Thread(char* threadName)
         }
     }
     uid = 0; //not used
-    ASSERT(tid<0);
+    ASSERT(tid>=0);
 
 #ifdef USER_PROGRAM
     space = NULL;
