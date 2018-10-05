@@ -38,38 +38,10 @@ Thread::Thread(char* threadName)
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
-    tid=uid=-1;
-
-    for(int i = 0; i < 128; ++i){
-        if(tid_flag[i] == 0){
-            this->tid = i;
-            tid = i
-            tid_flag[i] = 1;
-            tid_pointer[i] = this;
-            break;
-        }
-    }
-    uid = 0; //not used
-    if (tid < 0):
-        throw std::overflow_error("Run out of tid");
-
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
 }
-
-
-
-void TS(){
-
-    printf("Threads Information:\n");
-    for(int i = 0;i < 128;++i){
-        if(tid_flag[i] != 0){
-            printf("tid: %d, uid: %d, name: %s \n", tid_pointer[i]->get_tid(), tid_pointer[i]->get_uid(), tid_point[i]->getName());
-        }
-    }
-}
-
 
 //----------------------------------------------------------------------
 // Thread::~Thread
@@ -113,10 +85,10 @@ Thread::~Thread()
 //----------------------------------------------------------------------
 
 void 
-Thread::Fork(VoidFunctionPtr func, int arg)
+Thread::Fork(VoidFunctionPtr func, void *arg)
 {
     DEBUG('t', "Forking thread \"%s\" with func = 0x%x, arg = %d\n",
-	  name, (int) func, arg);
+	  name, (int) func, (int*) arg);
     
     StackAllocate(func, arg);
 
@@ -278,7 +250,7 @@ void ThreadPrint(int arg){ Thread *t = (Thread *)arg; t->Print(); }
 //----------------------------------------------------------------------
 
 void
-Thread::StackAllocate (VoidFunctionPtr func, int arg)
+Thread::StackAllocate (VoidFunctionPtr func, void *arg)
 {
     stack = (int *) AllocBoundedArray(StackSize * sizeof(int));
 
@@ -304,11 +276,11 @@ Thread::StackAllocate (VoidFunctionPtr func, int arg)
     *stack = STACK_FENCEPOST;
 #endif  // HOST_SNAKE
     
-    machineState[PCState] = (int) ThreadRoot;
-    machineState[StartupPCState] = (int) InterruptEnable;
-    machineState[InitialPCState] = (int) func;
+    machineState[PCState] = (int*)ThreadRoot;
+    machineState[StartupPCState] = (int*)InterruptEnable;
+    machineState[InitialPCState] = (int*)func;
     machineState[InitialArgState] = arg;
-    machineState[WhenDonePCState] = (int) ThreadFinish;
+    machineState[WhenDonePCState] = (int*)ThreadFinish;
 }
 
 #ifdef USER_PROGRAM

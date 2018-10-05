@@ -11,6 +11,7 @@
 
 #include "copyright.h"
 #include "system.h"
+#include "elevatortest.h"
 
 // testnum is set in main.cc
 int testnum = 1;
@@ -23,16 +24,6 @@ int testnum = 1;
 //	"which" is simply a number identifying the thread, for debugging
 //	purposes.
 //----------------------------------------------------------------------
-
-void TS(){
-
-    printf("Threads Information:\n");
-    for(int i = 0;i < 128;++i){
-        if(tid_flag[i] != 0){
-            printf("tid: %d, uid: %d, name: %s \n", tid_pointer[i]->get_tid(), tid_pointer[i]->get_uid(), tid_point[i]->getName());
-        }
-    }
-}
 
 void
 SimpleThread(int which)
@@ -58,22 +49,8 @@ ThreadTest1()
 
     Thread *t = new Thread("forked thread");
 
-    t->Fork(SimpleThread, 1);
+    t->Fork(SimpleThread, (void*)1);
     SimpleThread(0);
-}
-
-void
-ThreadTest2()
-{
-    DEBUG('t', "Entering ThreadTest1");
-    
-    for(int i = 0; i < 130; i++)
-        print(i)
-        Thread *t = new Thread("forked thread");
-    
-    print("Call TS Function:")
-    TS();
-
 }
 
 //----------------------------------------------------------------------
@@ -88,9 +65,6 @@ ThreadTest()
     case 1:
 	ThreadTest1();
 	break;
-    case 2:
-    ThreadTest2();
-    break;
     default:
 	printf("No test specified.\n");
 	break;

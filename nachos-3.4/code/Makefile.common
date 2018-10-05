@@ -25,7 +25,7 @@
 # All rights reserved.  See copyright.h for copyright notice and limitation 
 # of liability and disclaimer of warranty provisions.
 
-CFLAGS = -g -Wall -Wshadow $(INCPATH) $(DEFINES) $(HOST) -DCHANGED 
+CFLAGS = -g -Wall -Wshadow -fpermissive $(INCPATH) $(DEFINES) $(HOST) -DCHANGED 
 
 # These definitions may change as the software is updated.
 # Some of them are also system dependent
@@ -47,7 +47,9 @@ THREAD_H =../threads/copyright.h\
 	../machine/interrupt.h\
 	../machine/sysdep.h\
 	../machine/stats.h\
-	../machine/timer.h
+	../machine/timer.h\
+	../machine/elevator.h\
+	../machine/elevatortest.h
 
 THREAD_C =../threads/main.cc\
 	../threads/list.cc\
@@ -61,12 +63,15 @@ THREAD_C =../threads/main.cc\
 	../machine/interrupt.cc\
 	../machine/sysdep.cc\
 	../machine/stats.cc\
-	../machine/timer.cc
+	../machine/timer.cc\
+	../machine/elevatortest.cc\
+	../machine/elevator.cc
 
 THREAD_S = ../threads/switch.s
 
 THREAD_O =main.o list.o scheduler.o synch.o synchlist.o system.o thread.o \
-	utility.o threadtest.o interrupt.o stats.o sysdep.o timer.o
+	utility.o threadtest.o interrupt.o stats.o sysdep.o timer.o elevator.o \
+	elevatortest.o
 
 USERPROG_H = ../userprog/addrspace.h\
 	../userprog/bitmap.h\
