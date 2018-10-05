@@ -53,6 +53,16 @@ ThreadTest1()
     SimpleThread(0);
 }
 
+void
+ThreadTest2()
+{
+    DEBUG('t', "Entering ThreadTest1");
+    
+    for(int i = 0; i < testnum; ++i){
+        Thread *t = getInstance("new thread");
+    } 
+
+}
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -65,6 +75,10 @@ ThreadTest()
     case 1:
 	ThreadTest1();
 	break;
+    case 2:
+    ThreadTest2();
+    break;
+
     default:
 	printf("No test specified.\n");
 	break;
