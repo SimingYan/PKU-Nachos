@@ -56,11 +56,22 @@ ThreadTest1()
 void
 ThreadTest2()
 {
-    DEBUG('t', "Entering ThreadTest1");
+    DEBUG('t', "Entering ThreadTest2");
     
     for(int i = 0; i < 130; ++i){
         Thread *t = new Thread("forked thread");
     } 
+}
+
+void
+ThreadTest3()
+{
+    DEBUG('t', "Entering ThreadTest3");
+    
+    for(int i = 0; i < 120; ++i){
+        Thread *t = new Thread("forked thread");
+    } 
+    TS();
 
 }
 //----------------------------------------------------------------------
@@ -78,7 +89,9 @@ ThreadTest()
     case 2:
     ThreadTest2();
     break;
-
+    case 3:
+    ThreadTest3();
+    break;
     default:
 	printf("No test specified.\n");
 	break;
