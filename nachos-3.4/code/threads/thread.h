@@ -101,9 +101,17 @@ class Thread {
     void setStatus(ThreadStatus st) { status = st; }
     char* getName() { return (name); }
     void Print() { printf("%s, ", name); }
+    int get_tid(){
+        return this->tid;
+    }
+    int get_uid(){
+        return this->uid;
+    }
 
   private:
     // some of the private data for this class is listed above
+    int tid;
+    int uid;
     
     int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
