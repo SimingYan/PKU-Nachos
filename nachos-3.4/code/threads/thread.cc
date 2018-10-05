@@ -303,7 +303,7 @@ void TS(){
     printf("Threads Information:\n");
     for(int i = 0;i < 128;++i){
         if(tid_flag[i] != 0){
-            printf("tid: %d, uid: %d, name: %s \n", tid_pointer[i]->get_tid(), tid_pointer[i]->get_uid(), tid_point[i]->getName());
+            printf("tid: %d, uid: %d, name: %s \n", tid_pointer[i]->get_tid(), tid_pointer[i]->get_uid(), tid_pointer[i]->getName());
         }
     }
 }
