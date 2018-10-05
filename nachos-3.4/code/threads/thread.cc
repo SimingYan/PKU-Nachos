@@ -49,9 +49,10 @@ Thread::Thread(char* threadName)
         }
     }
     uid = 0; //not used
-    if (tid < 0):
+    if (tid < 0){
         throw std::overflow_error("Run out of tid");
-    
+    }
+
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
