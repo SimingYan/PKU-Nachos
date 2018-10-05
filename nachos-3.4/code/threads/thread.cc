@@ -38,6 +38,20 @@ Thread::Thread(char* threadName)
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
+    tid=uid=-1;
+    for(int i = 0; i < 128; ++i){
+        if(tid_flag[i] == 0){
+            this->tid = i;
+            tid = i
+            tid_flag[i] = 1;
+            tid_pointer[i] = this;
+            break;
+        }
+    }
+    uid = 0; //not used
+    if (tid < 0):
+        throw std::overflow_error("Run out of tid");
+    
 #ifdef USER_PROGRAM
     space = NULL;
 #endif
