@@ -40,10 +40,13 @@ SimpleThread(int which)
 void
 SimpleThread1(int which)
 {
-    int num;
-    printf("   %d", which);
-    Thread* new_thread = new Thread("forked", which);
-    printf("forked thread priority: %d\n", new_thread->get_priority());
+    printf("new thread priority: %d\n", this->get_priority());
+    printf("current thread priority: %d\n", currentThread->get_priority());
+    if(which < 6){
+        int num;
+        Thread* new_thread = new Thread("forked", which);
+        new_thread->Fork(SimpleThread1, which + 1);
+    }
 }
 
 //----------------------------------------------------------------------
@@ -79,10 +82,8 @@ ThreadTest3()
     DEBUG('t', "Entering ThreadTest3");
     Thread *t = new Thread("thread");
         
-    for(int i = 0; i < 9; ++i){
-        t->Fork(SimpleThread1, i);
-        printf("current thread priority: %d\n", currentThread->get_priority());
-    }    
+    t->Fork(SimpleThread1, 0);
+
 }
 
 /*
