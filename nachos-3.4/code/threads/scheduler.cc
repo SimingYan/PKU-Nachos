@@ -59,7 +59,7 @@ Scheduler::Scheduler()
     {
         readyList[i] = new List; 
     }
-    timer = new Timer(TimerHandler, 0, False);
+    timer = new Timer(TimerHandler, 0, false);
 }
 
 //----------------------------------------------------------------------
@@ -73,7 +73,7 @@ Scheduler::~Scheduler()
     {
         delete readyList[i]; 
     }
-    delete Timer;
+    delete timer;
 } 
 
 //----------------------------------------------------------------------
