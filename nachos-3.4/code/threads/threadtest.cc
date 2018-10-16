@@ -59,6 +59,19 @@ LongTimeJob(int which)
     }
 }
 
+void
+ForkAndLoop(int which)
+{
+    int num;
+    Thread* arr[3];
+    for (num = 0; num < 3; num++) {
+        printf("*** thread %d with priority %d forked and looped %d times\n",
+             which, currentThread->get_priority(), num);
+        arr[num] = new Thread("forked", 3 - num);
+        arr[num]->Fork(SimpleThread, (void*)arr[num]->get_tid());
+        currentThread->Yield();
+    }
+}
 
 //----------------------------------------------------------------------
 // ThreadTest1
@@ -108,7 +121,7 @@ ThreadTest4()
     t[0]->Fork(LongTimeJob, (void*)t[0]->get_tid());
     t[1] = new Thread("Important&Fast", 0);
     t[1]->Fork(SimpleThread, (void*)t[1]->get_tid());
-    //ForkAndLoop(0);
+    ForkAndLoop(0);
 }
 
 
