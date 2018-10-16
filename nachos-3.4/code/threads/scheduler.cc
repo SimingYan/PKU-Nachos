@@ -89,7 +89,10 @@ Scheduler::ReadyToRun (Thread *thread)
 {
     DEBUG('t', "Putting thread %s on ready list.\n", thread->getName());
     
-    int dst = std::min(thread->get_priority(), 4);
+    int dst = thread->get_priority();
+    if(thread->get_priority() > 4){
+        dst = 4;
+    }
     thread->set_priority(dst);
     thread->setStatus(READY);
 
