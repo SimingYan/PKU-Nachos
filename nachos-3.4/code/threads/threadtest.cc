@@ -40,12 +40,12 @@ SimpleThread(int which)
 void
 SimpleThread1(int which)
 {
-    printf("new thread priority: %d\n", this->get_priority());
-    printf("current thread priority: %d\n", currentThread->get_priority());
     if(which < 6){
         int num;
         Thread* new_thread = new Thread("forked", which);
         new_thread->Fork(SimpleThread1, which + 1);
+        printf("new thread priority: %d\n", new_thread->get_priority());
+        printf("current thread priority: %d\n", currentThread->get_priority());
     }
 }
 
