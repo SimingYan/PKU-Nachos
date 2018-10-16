@@ -72,7 +72,7 @@ ThreadTest2()
         Thread *t = new Thread("forked thread");
     } 
 }
-
+/*
 void
 ThreadTest3()
 {
@@ -83,6 +83,27 @@ ThreadTest3()
         t->Fork(SimpleThread1, (void*)i);
         printf("current thread priority: %d\n", currentThread->get_priority());
     }    
+}*/
+
+void Create_P(int p_this)
+{
+    if(p_this <= 6)
+    {
+        Thread* new_thread = new Thread("forked", 7 - p_this - 1);
+        printf("thread %d with priority %d created\n", p_this + 1, 7 - p_this - 1);
+        new_thread->Fork(Create_P, p_this + 1);
+        printf("thread %d finished\n", p_this);
+    }
+}
+
+void ThreadTest3()
+{
+    DEBUG('t', "Entering ThreadTest3");
+    Thread* t = new Thread("Forked", 7);
+    printf("thread %d with priority %d created\n", 0, 7);
+    t->Fork(Create_P, 0);
+    currentThread->Yield();
+    printf("Main thread finished\n");
 }
 //----------------------------------------------------------------------
 // ThreadTest
