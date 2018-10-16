@@ -37,6 +37,15 @@ SimpleThread(int which)
     }
 }
 
+void
+SimpleThread1(int which)
+{
+    int num;
+    
+    Thread* new_thread = new Thread("forked", which);
+    printf("forked thread priority: %d", new_thread->get_priority());
+}
+
 //----------------------------------------------------------------------
 // ThreadTest1
 // 	Set up a ping-pong between two threads, by forking a thread 
@@ -69,12 +78,11 @@ ThreadTest3()
 {
     DEBUG('t', "Entering ThreadTest3");
     Thread *t = new Thread("thread");
-    
+        
     for(int i = 0; i < 9; ++i){
-        Thread *t = new Thread("forked thread", i);
-        printf("thread created, priority: %d ", t->get_priority());
-        printf(" current thread priority: %d\n", currentThread->get_priority());
-    } 
+        t->Fork(SimpleThread1, (void*)i);
+        printf("current thread priority: %d", currentThread->get_priority());
+    }    
 }
 //----------------------------------------------------------------------
 // ThreadTest
