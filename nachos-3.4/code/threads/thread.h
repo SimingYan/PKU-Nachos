@@ -110,6 +110,9 @@ class Thread {
     int get_priority(){
         return this->priority;
     }
+    int set_priority(int p){
+        priority = p;
+    }
 
   private:
     // some of the private data for this class is listed above

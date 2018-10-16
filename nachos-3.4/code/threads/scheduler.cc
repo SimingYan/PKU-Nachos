@@ -27,10 +27,40 @@
 // 	Initialize the list of ready but not running threads to empty.
 //----------------------------------------------------------------------
 
+static int countdown = 0;
+static const Thread *lastthread = NULL;
+void TimerHandler(int dummy)
+{
+    if(interrupt->getStatus()==IdleMode) return;
+    //puts("In Timer Handler");
+    const int pr = currentThread->get_priority();
+
+    if(currentThread != lastthread)
+    {
+        countdown = 1 << (pr + 2);
+        if(pr == 4) // if it has already in the last queue
+        {
+            countdown <<= 2;
+        }
+        lastthread = currentThread;
+    }
+    countdown--;
+    if(countdown < 0)
+    {
+        currentThread->set_priority(pr + 1);
+        interrupt->YieldOnReturn();
+        printf("%s run out of time quantum.\n", currentThread->getName());
+    }
+}
+
 Scheduler::Scheduler()
 { 
-    readyList = new List; 
-} 
+    for(int i = 0; i < 5; i++)
+    {
+        readyList[i] = new List; 
+    }
+    timer = new Timer(TimerHandler, 0, False);
+}
 
 //----------------------------------------------------------------------
 // Scheduler::~Scheduler
@@ -39,7 +69,11 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
-    delete readyList; 
+    for(int i = 0; i < 5; i++)
+    {
+        delete readyList[i]; 
+    }
+    delete Timer;
 } 
 
 //----------------------------------------------------------------------
@@ -54,15 +88,16 @@ void
 Scheduler::ReadyToRun (Thread *thread)
 {
     DEBUG('t', "Putting thread %s on ready list.\n", thread->getName());
-
+    
+    int dst = std::min(thread->get_priority(), 4);
+    thread->set_priority(dst);
     thread->setStatus(READY);
 
-    readyList->SortedInsert((void *)thread, thread->get_priority());
+    readyList[dst]->Append((void *)thread);
 
     //if this thread is just created and has the highest priority
     //then yield current thread and move this to CPU
     if(thread != currentThread && thread->get_priority() < currentThread->get_priority()){
-        printf("Current Thread be occupied.");
         currentThread->Yield();
     }
     //readyList->Append((void *)thread);
@@ -79,7 +114,12 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
-    return (Thread *)readyList->Remove();
+    for(int i = 0; i < 5; i++)
+    {
+        Thread* t = readyList[i]->Remove();
+        if(t) return t;
+    }
+    return NULL;
 }
 
 //----------------------------------------------------------------------

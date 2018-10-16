@@ -48,6 +48,19 @@ SimpleThread1(int which)
     }
 }
 
+void
+LongTimeJob(int which)
+{
+    int num;
+    for (num = 0; num < 30; num++) {
+        printf("*** thread %d with priority %d looped %d times\n",
+             which, currentThread->getPriority(), num);
+        interrupt->SetLevel(IntOn);
+        interrupt->SetLevel(IntOff);
+    }
+}
+
+
 //----------------------------------------------------------------------
 // ThreadTest1
 // 	Set up a ping-pong between two threads, by forking a thread 
@@ -75,6 +88,7 @@ ThreadTest2()
     } 
 }
 
+// test priority
 void
 ThreadTest3()
 {
@@ -85,28 +99,19 @@ ThreadTest3()
 
 }
 
-/*
-void Create_P(int p_this)
+// test multi feedback queue
+void
+ThreadTest4()
 {
-    if(p_this <= 6)
-    {
-        Thread* new_thread = new Thread("forked", 7 - p_this - 1);
-        printf("thread %d with priority %d created\n", p_this + 1, 7 - p_this - 1);
-        new_thread->Fork(Create_P, p_this + 1);
-        printf("thread %d finished\n", p_this);
-    }
+    DEBUG('t', "Entering ThreadTest4");
+    Thread* t[2];
+    t[0] = new Thread("LongTimeJob", 1);
+    t[0]->Fork(LongTimeJob, (void*)t[0]->get_tid());
+    //t[1] = new Thread("Important&Fast", 0);
+    //t[1]->Fork(SimpleThread, (void*)t[1]->get_tid());
+    //ForkAndLoop(0);
 }
 
-void ThreadTest3()
-{
-    DEBUG('t', "Entering ThreadTest3");
-    Thread* t = new Thread("Forked", 7);
-    printf("thread %d with priority %d created\n", 0, 7);
-    t->Fork(Create_P, 0);
-    currentThread->Yield();
-    printf("Main thread finished\n");
-} 
-*/
 
 //----------------------------------------------------------------------
 // ThreadTest
@@ -125,6 +130,9 @@ ThreadTest()
     break;
     case 3:
     ThreadTest3();
+    break;
+    case 4:
+    ThreadTest4();
     break;
     default:
 	printf("No test specified.\n");
