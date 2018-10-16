@@ -33,7 +33,6 @@ SimpleThread(int which)
     for (num = 0; num < 5; num++) {
 	printf("*** thread %d looped %d times\n", which, num);
         currentThread->Yield();
-    
     }
 }
 
@@ -52,7 +51,7 @@ void
 LongTimeJob(int which)
 {
     int num;
-    for (num = 0; num < 500; num++) {
+    for (num = 0; num < 100; num++) {
         printf("*** thread %d with priority %d looped %d times\n",
              which, currentThread->get_priority(), num);
         interrupt->SetLevel(IntOn);
@@ -107,8 +106,8 @@ ThreadTest4()
     Thread* t[2];
     t[0] = new Thread("LongTimeJob", 1);
     t[0]->Fork(LongTimeJob, (void*)t[0]->get_tid());
-    //t[1] = new Thread("Important&Fast", 0);
-    //t[1]->Fork(SimpleThread, (void*)t[1]->get_tid());
+    t[1] = new Thread("Important&Fast", 0);
+    t[1]->Fork(SimpleThread, (void*)t[1]->get_tid());
     //ForkAndLoop(0);
 }
 
