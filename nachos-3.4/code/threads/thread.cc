@@ -53,7 +53,7 @@ Thread::Thread(char* threadName, int p=2)
     ASSERT(tid>=0);
     printf("Create Thread %d.\n", tid);
     
-    if(p < 0){p = 0}
+    if(p < 0){p = 0;}
 
     priority = p
 
