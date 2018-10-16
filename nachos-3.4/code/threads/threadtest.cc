@@ -41,7 +41,7 @@ void
 SimpleThread1(int which)
 {
     int num;
-    
+    printf("   %d", which);
     Thread* new_thread = new Thread("forked", which);
     printf("forked thread priority: %d\n", new_thread->get_priority());
 }
