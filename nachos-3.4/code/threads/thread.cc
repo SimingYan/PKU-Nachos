@@ -55,7 +55,7 @@ Thread::Thread(char* threadName, int p=2)
     
     if(p < 0){p = 0;}
 
-    priority = p
+    priority = p;
 
 #ifdef USER_PROGRAM
     space = NULL;
