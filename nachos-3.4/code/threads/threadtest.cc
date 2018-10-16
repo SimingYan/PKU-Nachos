@@ -43,7 +43,7 @@ SimpleThread1(int which)
     int num;
     
     Thread* new_thread = new Thread("forked", which);
-    printf("forked thread priority: %d", new_thread->get_priority());
+    printf("forked thread priority: %d\n", new_thread->get_priority());
 }
 
 //----------------------------------------------------------------------
@@ -81,7 +81,7 @@ ThreadTest3()
         
     for(int i = 0; i < 9; ++i){
         t->Fork(SimpleThread1, (void*)i);
-        printf("current thread priority: %d", currentThread->get_priority());
+        printf("current thread priority: %d\n", currentThread->get_priority());
     }    
 }
 //----------------------------------------------------------------------
