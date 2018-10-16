@@ -62,6 +62,7 @@ Scheduler::ReadyToRun (Thread *thread)
     //if this thread is just created and has the highest priority
     //then yield current thread and move this to CPU
     if(thread != currentThread && thread->get_priority() < currentThread->get_priority()){
+        printf("Current Thread be occupied.");
         currentThread->Yield();
     }
     //readyList->Append((void *)thread);
