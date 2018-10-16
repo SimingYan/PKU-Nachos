@@ -54,7 +54,7 @@ LongTimeJob(int which)
     int num;
     for (num = 0; num < 30; num++) {
         printf("*** thread %d with priority %d looped %d times\n",
-             which, currentThread->getPriority(), num);
+             which, currentThread->get_priority(), num);
         interrupt->SetLevel(IntOn);
         interrupt->SetLevel(IntOff);
     }
