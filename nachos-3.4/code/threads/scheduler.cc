@@ -56,7 +56,15 @@ Scheduler::ReadyToRun (Thread *thread)
     DEBUG('t', "Putting thread %s on ready list.\n", thread->getName());
 
     thread->setStatus(READY);
-    readyList->Append((void *)thread);
+
+    readyList->SortedInsert((void *)thread, thread->get_priority());
+
+    //if this thread is just created and has the highest priority
+    //then yield current thread and move this to CPU
+    if(thread != currentThread 
+        && thread->get_priority() > currentThread->get_priority())
+        {currentThread->Yield();}
+    //readyList->Append((void *)thread);
 }
 
 //----------------------------------------------------------------------

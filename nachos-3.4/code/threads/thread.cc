@@ -32,7 +32,7 @@
 //	"threadName" is an arbitrary string, useful for debugging.
 //----------------------------------------------------------------------
 
-Thread::Thread(char* threadName)
+Thread::Thread(char* threadName, int p=2)
 {
     name = threadName;
     stackTop = NULL;
@@ -52,6 +52,10 @@ Thread::Thread(char* threadName)
     uid = 0; //not used
     ASSERT(tid>=0);
     printf("Create Thread %d.\n", tid);
+    
+    if(p < 0){p = 0}
+
+    priority = p
 
 #ifdef USER_PROGRAM
     space = NULL;
@@ -196,11 +200,19 @@ Thread::Yield ()
     
     DEBUG('t', "Yielding thread \"%s\"\n", getName());
     
+    // To avoid highest priority thread not called, so move it to ready 
+    // list first
+    scheduler->ReadyToRun(this);
+    nextThread = scheduler->FindNextToRun();
+    if (nextThread != NULL) {
+    scheduler->Run(nextThread);
+    }
+    /* old implementation by inventor
     nextThread = scheduler->FindNextToRun();
     if (nextThread != NULL) {
 	scheduler->ReadyToRun(this);
 	scheduler->Run(nextThread);
-    }
+    }*/
     (void) interrupt->SetLevel(oldLevel);
 }
 

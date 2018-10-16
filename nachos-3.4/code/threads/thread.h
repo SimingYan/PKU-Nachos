@@ -107,11 +107,15 @@ class Thread {
     int get_uid(){
         return this->uid;
     }
+    int get_priority(){
+        return this->priority;
+    }
 
   private:
     // some of the private data for this class is listed above
     int tid;
     int uid;
+    int priority;
     
     int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
