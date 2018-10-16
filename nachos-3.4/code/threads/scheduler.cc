@@ -38,7 +38,7 @@ void TimerHandler(int dummy)
     if(currentThread != lastthread)
     {
         countdown = 1 << (pr + 2);
-        if(pr == Listnum - 1) // if it has already in the last queue
+        if(pr == 5 - 1) // if it has already in the last queue
         {
             countdown <<= 2;
         }
@@ -55,7 +55,7 @@ void TimerHandler(int dummy)
 
 Scheduler::Scheduler()
 { 
-    for(int i = 0; i < Listnum; i++)
+    for(int i = 0; i < 5; i++)
     {
         readyList[i] = new List; 
     }
@@ -69,7 +69,7 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
-    for(int i = 0; i < Listnum; i++)
+    for(int i = 0; i < 5; i++)
     {
         delete readyList[i]; 
     }
@@ -90,8 +90,8 @@ Scheduler::ReadyToRun (Thread *thread)
     DEBUG('t', "Putting thread %s on ready list.\n", thread->getName());
     
     int dst = thread->get_priority();
-    if(thread->get_priority() > Listnum - 1){
-        dst = Listnum - 1;
+    if(thread->get_priority() > 5 - 1){
+        dst = 5 - 1;
     }
     thread->set_priority(dst);
     thread->setStatus(READY);
@@ -117,7 +117,7 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
-    for(int i = 0; i < Listnum; i++)
+    for(int i = 0; i < 5; i++)
     {
         Thread* t = readyList[i]->Remove();
         if(t) return t;
@@ -195,6 +195,6 @@ void
 Scheduler::Print()
 {
     printf("Ready list contents:\n");
-    for(int i = 0; i < Listnum; i++)
+    for(int i = 0; i < 5; i++)
         readyList[i]->Mapcar((VoidFunctionPtr) ThreadPrint);
 }

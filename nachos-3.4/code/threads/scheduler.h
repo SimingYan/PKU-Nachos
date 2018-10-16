@@ -27,7 +27,6 @@ class Scheduler {
 					// list, if any, and return thread.
     void Run(Thread* nextThread);	// Cause nextThread to start running
     void Print();			// Print contents of ready list
-    static const int ListNum = 5;
 
   private:
     List *readyList[5];  		// queue of threads that are ready to run,
