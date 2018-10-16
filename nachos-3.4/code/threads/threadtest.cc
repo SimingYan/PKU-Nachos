@@ -72,7 +72,7 @@ ThreadTest3()
     
     for(int i = 0; i < 9; ++i){
         Thread *t = new Thread("forked thread", i);
-        print("thread created, priority: %d ", t->get_priority());
+        printf("thread created, priority: %d ", t->get_priority());
         printf(" current thread priority: %d\n", currentThread->get_priority());
     } 
 }
