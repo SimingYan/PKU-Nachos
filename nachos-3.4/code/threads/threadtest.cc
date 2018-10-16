@@ -52,7 +52,7 @@ void
 LongTimeJob(int which)
 {
     int num;
-    for (num = 0; num < 30; num++) {
+    for (num = 0; num < 500; num++) {
         printf("*** thread %d with priority %d looped %d times\n",
              which, currentThread->get_priority(), num);
         interrupt->SetLevel(IntOn);
