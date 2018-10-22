@@ -12,7 +12,7 @@
 #include "copyright.h"
 #include "system.h"
 #include "elevatortest.h"
-
+#include "synch.h"
 // testnum is set in main.cc
 int testnum = 1;
 
@@ -124,6 +124,7 @@ ThreadTest4()
     ForkAndLoop(0);
 }
 
+static int productnum = 0;
 Semaphore *rest, *avail;
 Semaphore *mutex;
 void
