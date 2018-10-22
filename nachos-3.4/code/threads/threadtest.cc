@@ -124,7 +124,7 @@ ThreadTest4()
     ForkAndLoop(0);
 }
 
-static int productnum = 0;
+
 Semaphore *rest, *avail;
 Semaphore *mutex;
 void
@@ -163,7 +163,7 @@ Consumer(int which)
 void
 ThreadTest5()
 {
-    DEBUG('t', "Entering ThreadTest6");
+    DEBUG('t', "Entering ThreadTest5");
     rest = new Semaphore("restpos", 6);
     avail = new Semaphore("availnum", 0);
     mutex = new Semaphore("mutex", 1);
@@ -180,6 +180,7 @@ ThreadTest5()
     }
 }
 
+static int productnum = 0;
 static int maxproduct = 0;
 Condition *cond;
 Lock *lock;
@@ -231,7 +232,7 @@ Con_Consumer(int which)
 void
 ThreadTest6()
 {
-    DEBUG('t', "Entering ThreadTest5");
+    DEBUG('t', "Entering ThreadTest6");
     cond = new Condition("condition");
     lock = new Lock("lock");
     maxproduct = 7;

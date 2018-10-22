@@ -100,13 +100,71 @@ Semaphore::V()
 // Dummy functions -- so we can compile our later assignments 
 // Note -- without a correct implementation of Condition::Wait(), 
 // the test case in the network assignment won't work!
-Lock::Lock(char* debugName) {}
-Lock::~Lock() {}
-void Lock::Acquire() {}
-void Lock::Release() {}
+Lock::Lock(char* debugName) 
+{
+    heldby = NULL;
+    sem = new Semaphore(debugName, 1);
+    name = debugName;
+}
+Lock::~Lock() 
+{
+    delete sem;
+}
+void Lock::Acquire() 
+{
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    sem->P();
+    heldby = currentThread;
+    interrupt->SetLevel(oldLevel);
+}
+void Lock::Release() 
+{
+    ASSERT(heldby == currentThread);
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    heldby = NULL;
+    sem->V();
+    interrupt->SetLevel(oldLevel);
+}
 
-Condition::Condition(char* debugName) { }
-Condition::~Condition() { }
-void Condition::Wait(Lock* conditionLock) { ASSERT(FALSE); }
-void Condition::Signal(Lock* conditionLock) { }
-void Condition::Broadcast(Lock* conditionLock) { }
+bool Lock::isHeldByCurrentThread()
+{
+    return heldby == currentThread;
+}
+
+Condition::Condition(char* debugName) 
+{
+    name = debugName;
+    WaitingList = new List;
+}
+Condition::~Condition() 
+{
+    delete WaitingList;
+}
+void Condition::Wait(Lock* conditionLock) 
+{
+    ASSERT(conditionLock->isHeldByCurrentThread());
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    conditionLock->Release();
+    WaitingList->Append(currentThread);
+    currentThread->Sleep();
+    conditionLock->Acquire();
+    interrupt->SetLevel(oldLevel);
+}
+void Condition::Signal(Lock* conditionLock) 
+{
+    ASSERT(conditionLock->isHeldByCurrentThread());
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    Thread *ptr;
+    if((ptr = WaitingList->Remove())!=NULL)
+        scheduler->ReadyToRun(ptr);
+    interrupt->SetLevel(oldLevel); 
+}
+void Condition::Broadcast(Lock* conditionLock) 
+{
+    ASSERT(conditionLock->isHeldByCurrentThread());
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    Thread *ptr;
+    while((ptr = WaitingList->Remove())!=NULL)
+        scheduler->ReadyToRun(ptr);
+    interrupt->SetLevel(oldLevel); 
+}
