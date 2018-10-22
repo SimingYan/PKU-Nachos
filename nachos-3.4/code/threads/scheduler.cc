@@ -29,6 +29,9 @@
 
 static int countdown = 0;
 static const Thread *lastthread = NULL;
+
+
+
 void TimerHandler(int dummy)
 {
     if(interrupt->getStatus()==IdleMode) return;
@@ -49,7 +52,6 @@ void TimerHandler(int dummy)
     {
         currentThread->set_priority(pr + 1);
         interrupt->YieldOnReturn();
-        printf("%s run out of time quantum.\n", currentThread->getName());
     }
 }
 

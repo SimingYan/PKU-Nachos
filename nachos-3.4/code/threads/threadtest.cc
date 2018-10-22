@@ -124,6 +124,58 @@ ThreadTest4()
     ForkAndLoop(0);
 }
 
+void
+Producer(int which)
+{
+    DEBUG('t', "Entering Producer");
+
+    for(int i = 0; i < 10; i++)
+    {
+        rest->P();
+        mutex->P();
+        productnum++;
+        printf("Producer %d produced one product. current num=%d\n",
+            which, productnum);
+        mutex->V();
+        avail->V();
+    }
+}
+
+void
+Consumer(int which)
+{
+    DEBUG('t', "Entering Consumer");
+    for(int i = 0; i < 8; i++)
+    {
+        avail->P();
+        mutex->P();
+        productnum--;
+        printf("consumer %d buy one product. current num=%d\n",
+            which, productnum);
+        mutex->V();
+        rest->V();
+    }
+}
+
+void
+ThreadTest5()
+{
+    DEBUG('t', "Entering ThreadTest6");
+    rest = new Semaphore("restpos", 6);
+    avail = new Semaphore("availnum", 0);
+    mutex = new Semaphore("mutex", 1);
+    Thread *p[2], *c[2];
+    for(int i = 0; i < 2; i++)
+    {
+        p[i] = new Thread("producer", 3);
+        p[i]->Fork(Producer, (void*)i);
+    }
+    for(int i = 0; i < 2; i++)
+    {
+        c[i] = new Thread("consumer", 3);
+        c[i]->Fork(Consumer, (void*)i);
+    }
+}
 
 //----------------------------------------------------------------------
 // ThreadTest
