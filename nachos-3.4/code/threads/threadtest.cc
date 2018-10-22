@@ -124,6 +124,8 @@ ThreadTest4()
     ForkAndLoop(0);
 }
 
+Semaphore *rest, *avail;
+Semaphore *mutex;
 void
 Producer(int which)
 {
