@@ -124,7 +124,7 @@ ThreadTest4()
     ForkAndLoop(0);
 }
 
-
+static int productnum = 0;
 Semaphore *rest, *avail;
 Semaphore *mutex;
 void
@@ -180,7 +180,6 @@ ThreadTest5()
     }
 }
 
-static int productnum = 0;
 static int maxproduct = 0;
 Condition *cond;
 Lock *lock;
