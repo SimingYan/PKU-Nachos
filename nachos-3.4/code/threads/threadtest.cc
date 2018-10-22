@@ -198,6 +198,9 @@ ThreadTest()
     case 4:
     ThreadTest4();
     break;
+    case 5:
+    ThreadTest5();
+    break;
     default:
 	printf("No test specified.\n");
 	break;
