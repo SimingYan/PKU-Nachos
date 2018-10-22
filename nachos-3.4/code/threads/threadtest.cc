@@ -180,6 +180,74 @@ ThreadTest5()
     }
 }
 
+static int maxproduct = 0;
+Condition *cond;
+Lock *lock;
+
+void
+Con_Producer(int which)
+{
+    DEBUG('t', "Entering Producer");
+
+    for(int i = 0; i < 10; i++)
+    {
+        lock->Acquire();
+        while(productnum >= maxproduct)
+        {
+            printf("full!(%d)\n", which);
+            cond->Wait(lock);
+            printf("back to producing(%d)\n", which);
+        }
+        productnum++;
+        printf("Producer %d produced one product. current num=%d\n",
+             which, productnum);
+        if(productnum == 1)
+            cond->Broadcast(lock);
+        lock->Release();
+    }
+}
+void
+Con_Consumer(int which)
+{
+    DEBUG('t', "Entering Consumer");
+    for(int i = 0; i < 8; i++)
+    {
+        lock->Acquire();
+        while(productnum <= 0)
+        {
+            printf("empty!(%d)\n", which);
+            cond->Wait(lock);
+            printf("product available(%d)\n", which);
+        }
+        productnum--;
+        printf("Consumer %d buy one product. current num=%d\n",
+            which, productnum);
+        if(productnum == maxproduct - 1)
+            cond->Broadcast(lock);
+        lock->Release();
+    }
+}
+
+void
+ThreadTest6()
+{
+    DEBUG('t', "Entering ThreadTest5");
+    cond = new Condition("condition");
+    lock = new Lock("lock");
+    maxproduct = 7;
+    Thread *p[2], *c[2];
+    for(int i = 0; i < 2; i++)
+    {
+        p[i] = new Thread("producer", 3);
+        p[i]->Fork(Con_Producer, (void*)i);
+    }
+    for(int i = 0; i < 2; i++)
+    {
+        c[i] = new Thread("consumer", 3);
+        c[i]->Fork(Con_Consumer, (void*)i);
+    }
+}
+
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -203,6 +271,9 @@ ThreadTest()
     break;
     case 5:
     ThreadTest5();
+    break;
+    case 6:
+    ThreadTest6();
     break;
     default:
 	printf("No test specified.\n");
