@@ -78,7 +78,9 @@ class Lock {
 					// Condition variable ops below.
 
   private:
-    char* name;				// for debugging
+    char* name;				// for 
+    Thread *heldby;
+	Semaphore *sem;
     // plus some other stuff you'll need to define
 };
 
@@ -131,6 +133,7 @@ class Condition {
 
   private:
     char* name;
+ 	List* WaitingList;
     // plus some other stuff you'll need to define
 };
 #endif // SYNCH_H
