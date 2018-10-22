@@ -168,3 +168,38 @@ void Condition::Broadcast(Lock* conditionLock)
         scheduler->ReadyToRun(ptr);
     interrupt->SetLevel(oldLevel); 
 }
+
+Barrier::Barrier(char *debugName, int threshold = 1)
+{
+    name = debugName;
+    this->threshold = threshold;
+    count = 0;
+    conditionLock = new Lock("Barrier Lock");
+    cond = new Condition("Barrier Condition");
+}
+Barrier::~Barrier()
+{
+    delete conditionLock;
+}
+void Barrier::Wait()
+{
+    conditionLock->Acquire();
+    count++;
+    if(count >= threshold)
+    {
+        cond->Broadcast(conditionLock);
+    }
+    else
+    {
+        cond->Wait(conditionLock);
+    }
+    conditionLock->Release();
+}
+void Barrier::Reset()
+{
+    count = 0;
+}
+void Barrier::SetWaitingNum(int n)
+{
+    threshold = n;
+}

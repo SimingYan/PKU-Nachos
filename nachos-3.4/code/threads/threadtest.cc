@@ -248,6 +248,28 @@ ThreadTest6()
     }
 }
 
+Barrier* barrier;
+
+void BarrierTest(int which)
+{
+    printf("Thread %d face barrier\n", which);
+    barrier->Wait();
+    printf("Now Running thread %d\n", which);
+}
+
+void
+ThreadTest7()
+{
+    DEBUG('t', "Entering ThreadTest7");
+    barrier = new Barrier("barrier", 3);
+    Thread *p[4];
+    for(int i = 0; i < 4; i++)
+    {
+        p[i] = new Thread("test barrier", 3);
+        p[i]->Fork(BarrierTest, (void*)i);
+    }
+}
+
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -274,6 +296,9 @@ ThreadTest()
     break;
     case 6:
     ThreadTest6();
+    break;
+    case 7:
+    ThreadTest7();
     break;
     default:
 	printf("No test specified.\n");

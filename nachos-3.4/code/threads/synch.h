@@ -136,4 +136,26 @@ class Condition {
  	List* WaitingList;
     // plus some other stuff you'll need to define
 };
+
+// Barrier will block every thread that calls wait and wake them
+// up when the number of waiting threads reach a pre-set threshold.
+class Barrier {
+  public:
+    Barrier(char *debugName, int threshold);
+    ~Barrier();
+    char* getName() { return (name); }
+
+    void Wait();
+    void SetWaitingNum(int n);
+    void Reset();
+  private:
+    char* name;
+    Lock* conditionLock;
+    Condition* cond;
+    int threshold;
+    volatile int count;
+};
+
 #endif // SYNCH_H
+
+
