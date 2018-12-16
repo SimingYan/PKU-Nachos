@@ -329,9 +329,9 @@ ThreadTest()
     case 7:
     ThreadTest7();
     break;
-    case 8:
-    ThreadTest8();
-    break;
+    //case 8:
+    //ThreadTest8();
+    //break;
     default:
 	printf("No test specified.\n");
 	break;
