@@ -270,6 +270,35 @@ ThreadTest7()
     }
 }
 
+#ifdef USER_PROGRAM
+//----------------------------------------------------------------------
+// ThreadTest8
+//  Test User Program
+//----------------------------------------------------------------------
+
+extern void StartProcess(char*);
+
+void RunSort(int which)
+{
+    StartProcess("../test/sort");
+}
+void RunMatMult(int which)
+{
+    StartProcess("../test/matmult");
+}
+
+void
+ThreadTest8()
+{
+    DEBUG('t', "Entering ThreadTest8");
+    Thread *p[2];
+    p[0] = new Thread("thread 1", 3);
+    p[1] = new Thread("thread 2", 3);
+    p[0]->Fork(RunSort, (void*)1);
+    p[1]->Fork(RunMatMult, (void*)2);
+}
+#endif
+
 //----------------------------------------------------------------------
 // ThreadTest
 // 	Invoke a test routine.
@@ -299,6 +328,9 @@ ThreadTest()
     break;
     case 7:
     ThreadTest7();
+    break;
+    case 8:
+    ThreadTest8();
     break;
     default:
 	printf("No test specified.\n");
